@@ -1,0 +1,44 @@
+:root {
+    --main-accent: rgb(89, 18, 255);
+    --main-white: rgb(255, 255, 255);
+    --bg-gray: rgb(235, 235, 235)
+}
+
+h1 {
+    font-family: 'Merriweather';
+    font-weight: 800;
+    color: var(--main-accent);
+    font-size: 4em;
+    text-align: center;
+}
+
+.form_container {
+    width: 75%;
+    margin: auto;
+}
+
+form input {
+    width: 100%;
+    margin: 2%
+}
+
+input[type="submit"] {
+    background-color: var(--main-accent);
+    font-family: 'Merriweather';
+    font-weight: 600;
+    font-size: 120%;
+    color: var(--main-white);
+    height: 3em;
+
+    border-radius: 1em;
+    border-style: hidden;
+}
+
+input[type="text"], input[type="url"] {
+    background-color: var(--bg-gray);
+    height: fit-content;
+    border-radius: 1em;
+    height: 3em;
+    border-width: 0.02em;
+}
+

@@ -29,6 +29,7 @@ while not api_token:
             print("[ERR] Could not save token to file. Exiting...")
             exit(-1)
 
+
 # Scrape data
 scraper = VintedScraper()
 publisher = ShopifyPublisher("https://9014a6-4.myshopify.com/", api_token)
