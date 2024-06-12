@@ -31,8 +31,8 @@ class VintedScraper (Scraper):
             description = self.get_description(soup)
             price = self.get_price(soup)
             return Listing(title, description, price, images, properties)
-        except:
-            print(f"[ERR] Got page {url} but could not retrieve attributes from page contents.")
+        except Exception as e:
+            print(f"[ERR] Got page {url} but could not retrieve attributes from page contents.", f"\t>> Error is {e} on line {e.__traceback__.tb_lineno}.", sep="\n")
             return None
         
 
@@ -93,7 +93,7 @@ class VintedScraper (Scraper):
 
     def get_price(self, soup : bs4.BeautifulSoup):
         print("[i] Parsing price.")
-        price = soup.select_one("div.details-list--pricing h1").text
+        price = soup.select_one("div.details-list--pricing h3").text
         try:
             price = float(price)
         except:
