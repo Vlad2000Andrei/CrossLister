@@ -3,6 +3,8 @@ from publisher import ShopifyPublisher
 from scraper import VintedScraper
 from os import path
 
+ASK_BEFORE_PUB = False
+
 def get_YN(text : str):
     print(text)
     while True:
@@ -33,16 +35,30 @@ while not api_token:
 scraper = VintedScraper()
 publisher = ShopifyPublisher("https://9014a6-4.myshopify.com/", api_token)
 
+urls = []
 while True:
-    vinted_url = input("\n\n(Ctrl + C to quit!) Please enter your Vinted URL: ").strip()
-    listing = scraper.scrape(vinted_url)
-
-    if not listing:
-        print(f"[ERR] Could not scrape data from {vinted_url}")
-        continue
-
-    print("Scraped Item:", listing, sep="\n")
-    if get_YN("Publish to Shopify?"):
-        publisher.publish(listing)
+    input_url = input("\n\n(Ctrl + C to quit!) Please enter your Vinted URL or type 'start' to begin copying: ").strip()
+    if input_url.lower() != "start":
+        urls.append(input_url)
+        print(f"\t>>> Added URL {input_url} to the queue.")
     else:
-        print("[i] Cancelled publication.")
+        print(f"Cross-listing {len(urls)} products.")
+        for vinted_url in urls:
+            print("\n\n", "-"*15, f"[{urls.index(vinted_url) + 1} / {len(urls)}]", "-"*15)
+            try:
+                listing = scraper.scrape(vinted_url)
+
+                if not listing:
+                    print(f"[ERR] Could not scrape data from {vinted_url}")
+                    continue
+
+                print("Scraped Item:", listing, sep="\n")
+                if get_YN("Publish to Shopify?") or not ASK_BEFORE_PUB:
+                    publisher.publish(listing)
+                else:
+                    print("[i] Cancelled publication.")
+            except Exception as e:
+                print(f"Could not complete cross-listing for product: {vinted_url}.\n\t>> Error is {e} on line {e.__traceback__.tb_lineno}.")
+                continue
+        urls = []
+        print(f"\n\n\n✅ All jobs completed!")
