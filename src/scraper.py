@@ -93,7 +93,7 @@ class VintedScraper (Scraper):
 
     def get_price(self, soup : bs4.BeautifulSoup):
         print("[i] Parsing price.")
-        price = soup.select_one("div.details-list--pricing h3").text
+        price = soup.select_one('div[data-testid="item-price"] p').text
         try:
             price = float(price)
         except:
